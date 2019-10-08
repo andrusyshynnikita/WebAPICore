@@ -7,40 +7,37 @@ namespace WebAPICore.DAL.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        private readonly DbSet<TEntity> _dbSet;
         private readonly WebAPICoreContext _context;
+
+
+        protected DbSet<TEntity> DbSet { get; private set; }
         public BaseRepository(WebAPICoreContext webAPICoreContext)
         {
             _context = webAPICoreContext;
-            _dbSet = _context.Set<TEntity>();
+            DbSet = _context.Set<TEntity>();
 
         }
         public Task<TEntity> GetItem(int id)
         {
-            return _dbSet.FindAsync(id);
-        }
-
-        public IQueryable<TEntity> GetAll()
-        {
-            return _dbSet;
+            return DbSet.FindAsync(id);
         }
 
         public async Task Create(TEntity entity)
         {
-            _dbSet.Add(entity);
+            DbSet.Add(entity);
             await SaveChanges();
         }
 
         public async Task Update(TEntity entity)
         {
-            _dbSet.Update(entity).State = EntityState.Modified;
+            DbSet.Update(entity).State = EntityState.Modified;
             await SaveChanges();
         }
 
         public async Task Delete(int id)
         {
             var item = await GetItem(id);
-            _dbSet.Remove(item);
+            DbSet.Remove(item);
             await SaveChanges();
         }
 

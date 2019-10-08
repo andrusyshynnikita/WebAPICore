@@ -32,11 +32,11 @@ namespace WeAPICore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             services.AddDbContextPool<WebAPICoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalDataBase")));
-            services.AddAutoMapper(typeof(TaskProfile));
-            services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<ITaskService, TaskService>();
-            services.AddScoped<IStorageHelper>(sp => new StorageHelper(HostingEnvironment.ContentRootPath));
+
+            WebAPICore.BLL.Configuration.Setup(services, HostingEnvironment);
+            WebAPICore.DAL.Configuration.Setup(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

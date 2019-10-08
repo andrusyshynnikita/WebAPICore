@@ -10,6 +10,6 @@ namespace WebAPICore.DAL
             : base(options)
         { }
 
-        public DbSet<DBTask> Tasks { get; set; }
+        public DbSet<TaskDB> Tasks { get; set; }
     }
 }

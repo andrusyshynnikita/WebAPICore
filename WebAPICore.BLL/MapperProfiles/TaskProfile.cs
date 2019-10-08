@@ -11,9 +11,9 @@ namespace WebAPICore.BLL.MapperProfiles
     {
         public TaskProfile()
         {
-            CreateMap<DBTask, TaskViewModel>().ForMember(m => m.AudioFileContent, vm => vm.Ignore());
+            CreateMap<TaskDB, TaskViewModel>().ForMember(m => m.AudioFileContent, vm => vm.Ignore());
 
-            CreateMap<TaskViewModel, DBTask>();
+            CreateMap<TaskViewModel, TaskDB>();
         }
     }
 }

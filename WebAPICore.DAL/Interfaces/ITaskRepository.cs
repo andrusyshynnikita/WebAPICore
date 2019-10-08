@@ -3,8 +3,8 @@ using WebAPICore.Common.DBModels;
 
 namespace WebAPICore.DAL.Interfaces
 {
-    public interface ITaskRepository : IBaseRepository<DBTask>
+    public interface ITaskRepository : IBaseRepository<TaskDB>
     {
-        IEnumerable<DBTask> GetAllUserTasks(string userId);
+        IEnumerable<TaskDB> GetAllUserTasks(string userId);
     }
 }

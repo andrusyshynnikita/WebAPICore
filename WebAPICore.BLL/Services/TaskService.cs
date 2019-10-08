@@ -15,6 +15,7 @@ namespace WebAPICore.BLL.Services
         private readonly ITaskRepository _taskRepository;
         private readonly IMapper _mapper;
         private readonly IStorageHelper _storageHelper;
+
         public TaskService(ITaskRepository taskRepository, IMapper mapper, IStorageHelper storageHelper)
         {
             _taskRepository = taskRepository;
@@ -24,17 +25,18 @@ namespace WebAPICore.BLL.Services
 
         public async Task<IEnumerable<TaskViewModel>> GetTasks(string id)
         {
-            IEnumerable<TaskViewModel> tasksviewModel = null;
+            IEnumerable<TaskViewModel> tasksviewModel = default;
 
-            IEnumerable<DBTask> tasksModel = _taskRepository.GetAllUserTasks(id);
+            IEnumerable<TaskDB> tasksModel = _taskRepository.GetAllUserTasks(id);
             try
             {
-                var test = tasksModel.ToList();
-                tasksviewModel = _mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(tasksModel);
+                tasksviewModel = _mapper.Map<IEnumerable<TaskDB>, IEnumerable<TaskViewModel>>(tasksModel);
             }
             catch (System.Exception ex)
             {
                 System.Console.WriteLine(ex.Message);
+
+                return default;
             }
 
             return tasksviewModel;
@@ -44,9 +46,9 @@ namespace WebAPICore.BLL.Services
         {
             var responseViewModel = new ResponseViewModel();
 
-            DBTask task = _mapper.Map<TaskViewModel, DBTask>(taskViewModel);
+            TaskDB task = _mapper.Map<TaskViewModel, TaskDB>(taskViewModel);
 
-            if (task.Id == 0)
+            if (task.Id == default(int))
             {
                 await _taskRepository.Create(task);
             }
@@ -68,8 +70,10 @@ namespace WebAPICore.BLL.Services
         {
             var responseViewModel = new ResponseViewModel();
 
-            DBTask task = await _taskRepository.GetItem(id);
+            TaskDB task = await _taskRepository.GetItem(id);
+
             await _taskRepository.Delete(id);
+
             responseViewModel.IsSuccess = true;
 
             if (!string.IsNullOrEmpty(task?.AudioFileName))
@@ -82,8 +86,9 @@ namespace WebAPICore.BLL.Services
 
         public async Task<TaskViewModel> DownloadAudioFile(int id)
         {
-            DBTask taskModel = await _taskRepository.GetItem(id);
-            var taskViewModel = _mapper.Map<DBTask, TaskViewModel>(taskModel);
+            TaskDB taskModel = await _taskRepository.GetItem(id);
+
+            var taskViewModel = _mapper.Map<TaskDB, TaskViewModel>(taskModel);
 
             if (!string.IsNullOrEmpty(taskModel.AudioFileName))
             {

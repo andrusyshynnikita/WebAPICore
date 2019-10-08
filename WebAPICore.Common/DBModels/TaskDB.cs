@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebAPICore.Common.DBModels
 {
-    public class DBTask : BaseDBModel
+    public class TaskDB : BaseDBModel
     {
         public string User_Id { get; set; }
         public string Title { get; set; }

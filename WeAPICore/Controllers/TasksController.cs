@@ -8,7 +8,7 @@ using WebAPICore.Common.ViewModels;
 
 namespace WeAPICore.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TasksController : ControllerBase
     {
@@ -19,15 +19,19 @@ namespace WeAPICore.Controllers
             _taskService = taskService;
         }
 
-        [HttpGet("Tasks/{id}")]
-        public async Task<IEnumerable<TaskViewModel>> GetTasks(string id)
+        [HttpGet("{id}")]
+        public async Task<ResponseRequestViewModel<IEnumerable<TaskViewModel>>> GetTasks(string id)
         {
-            IEnumerable<TaskViewModel> tasks = await _taskService.GetTasks(id);
+            var result = new ResponseRequestViewModel<IEnumerable<TaskViewModel>>();
 
-            return tasks;
+            IEnumerable<TaskViewModel> tasks = await _taskService.GetTasks(id);
+            result.ResponseData = tasks;
+            result.IsSuccess = true;
+
+            return result;
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTasks(int id)
         {
             ResponseViewModel result = await _taskService.Delete(id);
@@ -37,7 +41,7 @@ namespace WeAPICore.Controllers
                 return Ok();
             }
 
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpPost]
@@ -50,7 +54,7 @@ namespace WeAPICore.Controllers
                 return Ok();
             }
 
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
@@ -60,37 +64,5 @@ namespace WeAPICore.Controllers
 
             return _taskModel;
         }
-
-        // GET api/values
-        //[HttpGet]
-        //public ActionResult<IEnumerable<string>> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/values/5
-        //[HttpGet("{id}")]
-        //public ActionResult<string> Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/values
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

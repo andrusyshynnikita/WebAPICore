@@ -5,16 +5,16 @@ using WebAPICore.DAL.Interfaces;
 
 namespace WebAPICore.DAL.Repositories
 {
-    public class TaskRepository : BaseRepository<DBTask>, ITaskRepository
+    public class TaskRepository : BaseRepository<TaskDB>, ITaskRepository
     {
 
         public TaskRepository(WebAPICoreContext webAPICoreContext) : base(webAPICoreContext)
         {
         }
 
-        public IEnumerable<DBTask> GetAllUserTasks(string userId)
+        public IEnumerable<TaskDB> GetAllUserTasks(string userId)
         {
-            IEnumerable<DBTask> userTasks = GetAll().Where(x => x.User_Id == userId);
+            IEnumerable<TaskDB> userTasks = DbSet.Where(x => x.User_Id == userId);
 
             return userTasks;
         }

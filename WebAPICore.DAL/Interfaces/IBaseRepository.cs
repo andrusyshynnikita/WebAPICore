@@ -8,7 +8,6 @@ namespace WebAPICore.DAL.Interfaces
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        IQueryable<TEntity> GetAll();
 
         Task<TEntity> GetItem(int id);
 
