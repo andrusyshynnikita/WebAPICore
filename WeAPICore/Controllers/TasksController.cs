@@ -8,7 +8,7 @@ using WebAPICore.Common.ViewModels;
 
 namespace WeAPICore.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase
     {
@@ -57,7 +57,7 @@ namespace WeAPICore.Controllers
             return BadRequest();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("audio_file/{id}")]
         public async Task<TaskViewModel> GetAudioFile(int id)
         {
             TaskViewModel _taskModel = await _taskService.DownloadAudioFile(id);
