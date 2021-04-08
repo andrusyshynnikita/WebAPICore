@@ -25,6 +25,8 @@ namespace WebAPICore.BLL.Services
 
         public async Task<IEnumerable<TaskViewModel>> GetTasks(string id)
         {
+            if(string.IsNullOrEmpty(id)) throw new ArgumentException();
+            
             IEnumerable<TaskViewModel> tasksviewModel = default;
 
             IEnumerable<TaskDB> tasksModel = _taskRepository.GetAllUserTasks(id);
